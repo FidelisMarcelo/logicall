@@ -17,7 +17,12 @@ export const setCookie = (
     ? `j:${JSON.stringify(value)}`
     : String(value);
 
-  const cookieOptions = { ...options };
+  const cookieOptions: CookieSerializeOptions = { 
+    ...options, 
+    httpOnly: true,
+    sameSite: "none",
+    secure: true, 
+  };
 
   if ("maxAge" in options) {
     cookieOptions.expires = new Date(Date.now() + options.maxAge);

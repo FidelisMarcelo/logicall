@@ -27,10 +27,7 @@ export async function signUp(
 ) {
   const data = { ...input, password: encrypt(input.password) };
   const user = await prisma.user.create({ data });
-  setCookie(response, CookieConfig.token, await token.assign(user), {
-    httpOnly: true,
-    sameSite: "none",
-  });
+  setCookie(response, CookieConfig.token, await token.assign(user));
   return user;
 }
 
@@ -45,10 +42,7 @@ export async function signIn(
   });
 
   if (user?.password === encryptedPassword && user?.role === input.role) {
-    setCookie(response, CookieConfig.token, await token.assign(user), {
-      httpOnly: true,
-      sameSite: "none",
-    });
+    setCookie(response, CookieConfig.token, await token.assign(user));
     return user;
   }
 
@@ -61,8 +55,6 @@ export async function signOut(_parent: any, _args: any, { auth, redis, response 
   }
   setCookie(response, CookieConfig.token, "", {
     maxAge: 0,
-    httpOnly: true,
-    sameSite: "none",
   });
   return "Logout Success";
 }
